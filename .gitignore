@@ -1,0 +1,11 @@
+.env
+# Local logs
+cron.log
+
+# Build artifacts
+*.webp
+
+# Generated assets/snippets
+assets/*_local.png
+assets/*.b64
+snippets/
