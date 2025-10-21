@@ -19,13 +19,13 @@ load("schema.star", "schema")
 
 load("encoding/base64.star", "base64")
 AWS_ICON = base64.decode("""
-iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABQklEQVQoz6WSsUvDQBTGf02zO3QpWNqK0sHsooMGMmSxIBScAzcoDaVLEXddhOLSsUOlf0IG14Y4Ck5SwdCjuUEIOAoODq1D2qgFpdS3vOPg9933vnuZrKZNWaG0VaB/gXolDydn1wAMBgMAoijiaTik7roEQUC5XCaKIoQQAHTbLfQwBillqtRsNul0OgghME0TpRSWZSGlpFgs4vs+YQz6tmFg23YKep5HqVSiVqvRaDTSe6UUALZtEwQBOkChUMBxnNTKXGj0cIueM+i2W4RxMkK/3/8ZjmmaSClRSiGlpFqtoucMhBCEMdRdl17vJnWQ2dtkej9eLtxKHtbXZqmeWrA7nvD4ouE//w2eH05w9mcvZjVtenk0Wfr/Xt++gXMbB1tfAhfHSb/y4P0jOd+NNMJ4AVysnY1E5Lf5M6su+ScMmm/oIzT5xwAAAABJRU5ErkJggg==
+iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABAElEQVQoz8WSTUvDUBBFT0RL8l5clKa0KGok2biQWhR05R8X3LhR8BPciKlGIaWliTEkLylY0FWKxYAQBGc1M8wZ7gxXc3rHn9SIpTrQ/4DLZSKl4OigjykF40lInhcIYQDQaVtkKuf88gal8kUQwJSC3u4OKi8AMHSdt/gdgGA4qpZqtZq4js3HbIY38DF0nWI6JRiOuL67x3VsrFbzp9Qwijk5PSNJU8Io5uLqFoA0Uzj2Jt7Ar75x1ZRsb20wnoTzRWVfCIP1tS6Zynl5DQDQvhug22lzuL+H69g0GisAJEnKw+MT3rNPGMXz52hVzpFSLNTlcKXU3wb/zAC1wS8cAF+/y0pEjgAAAABJRU5ErkJggg==
 """)
 GCP_ICON = base64.decode("""
-iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABoUlEQVQoz2Pc0JzEzEAGYEIXcBXfo2F45PYiq4OXf1sdvPzb6OjtB+cFTdzxajQ8cnvR11Xilzn//oiEiXH8+SGdvWH+lnfM36cgq2WBMc4Lmrhb/b0cycDAwPCdmWM5578fT74zccgwMDAwLFUJjTrz0yCDieHvzxiWxcUoGitVGkJ/ZrO8ZGBgYPg+Q5nhmJ1uFUzu3B/d1wwMDPn/GJjzNzAnLgr4O/8i49dZctosSt+nMDAy2KJ44j/D4e3HfV1grrn8WmcrAwMDAzcrw+bg/wsCWf6I/tnDwsggysDAwPDjE+trBgYGBg6+36LIZjz8pPuC+f+fiwwMDNpffzP7Lv0fe5bx517RPwwMDAz/fzMu3nHaJwUWSOdtVOPQQ3LJn9jefwzM+Sih+rJfnQ0eUFg0wQDz/79/mP///QO3keE/w2Gb1w6nkBXJ38hiR+Yz/mdwYGBg0GZgYFjJ8nOfSjq7052ZPz6zajAy/HdACR+mHwxMfzn+oNvKzcHSx7SPQ3PBn7uc+jkMFj+JSGlF3Bws5gF/519kpFpaJRYAAJ1JmAEpLB3MAAAAAElFTkSuQmCC
+iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAACZklEQVR4nH2SX0hTYRjGn/f7zs5sO5tukqYzTDOdFmllgWJzMzG6CbpTKIkIIxAkiuyi27opyagLqavAsMiLwKgLwRxFBaXezT+Zov1Rs+Waa2vn7HxfF7bKi3ruXnge3vfl9wB/iRHhXyJi6+ffIQACgNuisAPZmYXlmq2CIBGKJUKD4ehcxDAEEUFK+SeYDjVuzMzp8hY+KLfbfBa2tkE3TUxFV58en9NbRj5NL6W9jBFBElDjcGb1lnoni5nmW4yZ0WfhyMNg+Ft/TNcxX9YcyDk1POEqqsuSIBBxgP069rG/5JbRUSbD7cWJ83vdPgCwEuD3FBX4L7wdD3RLWd022LPu37ZDvCL5ZIORHOaGHuTmhwH25tJJdlBR1gwFNacrm66kZMPleNKz70QFADB/FblunGVjqsNQZJIxPc7ingJlz/4d7IiqgDgRIu+GJvRETGdcVUsPd4+4iutduHuRd8iXFjl/Xxmt38VcVduY7eYZfjRTIwIIjHEQs8Bd0pBd2zk12tQl5fbmOx2K20n5UoV4EZJ9wTGxAgDt19CbxiSECcDE1+mh8Or7133O/JJKi82dryyG5QzpjPl3itb6gKP/1axlKUMRZAoOSnokoJAUhrDneHOzttS2ihQxPbowQ9Vepj2/Th/HM/KcnV924/N3S1ThugJTg33+qmApjQnoKcXqcHLVCj22Eh293eQhAGisVfOMY3X3wrmbfA5FQJAJMjU4ZntApgoQIAUQX54MTg2ca1kef7RARICUAOxWcm7WnIIYCBIAB/+xFZBsrV9SILYUiqYSEYk0R76+v/9VGv5PhNjsCpzTQGQAAAAASUVORK5CYII=
 """)
 AZURE_ICON = base64.decode("""
-iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABt0lEQVQoz42Sz0vcQBTHv5lMEjfrhlbb0pIt2FVJQfSwCD2ohyJ7sJf+B714tSiW/gOFHvTg/6B43EuhsIeCHtqTZy20SLXQXRd/RJttnGSSyXooI5O1BR8MzHszn/fefN9o7mKdoMdixhbKT0s2APi7Lf8s6m/euW831Du0Fwqa/vvHs8/f2BMPKADYzwD785cPnSOWA3PVwoB7hLPZ5tY2iY7ZdXxgZvplzNjCf0FqiBqsQhW3sBwY++yR3H/9uNONjhnkevJi5lUYcO8GeHFyOUc0vJW+FbS7alLR7asmcVr5Z8XUKmWpVcoAQJiFze/1Txvq+eikM34DLPRrw7n3mvoKNfUVNXbUMudlu0SqqTuDrwFAWEU9dh5q1BC1yB2rcj/VJOhOVYdluxQAkjitROdpBVYR2b1yFwAClNeQCGScJUCJygSjk874yc+0QQCA8Gj6uvfTX9pd0T6Q/v5hJ6cDL4y9CwPukTDgnqomAPxpnS4553vL0o/anbR3jpQaosb+KqkDgPG7veq4Aw0AIIZ+liViff+wQ0aGkKgfRXMX60QdbNExv6mZw4B76vwAwLDojyt2OLOVh76h9gAAAABJRU5ErkJggg==
+iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAA+0lEQVR4nNWSvUrEQBSFv8ydhImCmDyC76GNvdopWLiFD+CjCJaLoI0gKD7EWtlYKNjbLUhWIrL5m7m2OyktBE95ON/94yb1wZayokG1KZy46cvX5H5vzu4+V/WCRixuNWf4pf4etINqs2p4pRtUCYEQAgRPo4HODyOwcFm0tCouyYX1dFnma7BR4khwRkbg5ev7JOoIXlJkNvePb08QWj7bJT4xRKg93bmIS6mHXOB5xkl/zTYGrwHROJbIg8ZWGLCblv7u9uymPOLwWM6pPIxH9fVHE4O+Iymy0NZV/Q1DRdMv6FJDFoGIjY4DgKQOjDEGrOAwYP/v5/wAoxpi2W2kUPEAAAAASUVORK5CYII=
 """)
 
 # Status check endpoints - simplified for demonstration
@@ -59,36 +59,71 @@ def get_schema():
 
 def check_aws_status():
     """
-    Check AWS status by examining RSS feed.
-    Returns True if all services are operational, False if there are issues.
+    Check AWS status by examining the AWS Service Health RSS feed.
+    Logic:
+    - Parse the first <item> title; AWS posts a final RESOLVED update when an
+      incident ends. If the latest item is RESOLVED or "operating normally",
+      treat as healthy.
+    - Otherwise, consider it degraded.
+    This avoids false reds caused by older incident keywords elsewhere in RSS.
     """
     cache_key = "aws_status"
     cached_status = cache.get(cache_key)
-    
     if cached_status != None:
         return cached_status == "good"
-    
-    # For a real implementation, you would parse the RSS feed
-    # For now, we'll do a simplified check
+
     response = http.get(AWS_STATUS_URL, ttl_seconds = 60)
     if response.status_code == 200:
-        # Check if RSS contains any active incidents
         content = str(response.body())
-        is_good = True
 
-        # Check for problem indicators in RSS
-        problem_keywords = ["Service disruption", "Degraded", "Investigating", "Identified", "Monitoring"]
-        for keyword in problem_keywords:
-            if keyword.lower() in content.lower():
-                # Found a potential issue, but need to check if it's resolved
-                if "[RESOLVED]" not in content[:500]:  # Check recent items
+        # Extract first <item> <title> ... </title>
+        lower = content.lower()
+        item_start = lower.find("<item>")
+        is_good = True
+        if item_start != -1:
+            title_tag = "<title>"
+            title_cdata_open = "<![cdata["
+            title_cdata_close = "]]></title>"
+
+            # Find title within the first item block
+            item_end = lower.find("</item>", item_start)
+            block = lower[item_start:item_end if item_end != -1 else None]
+
+            # Prefer CDATA title if present
+            t_start = block.find(title_cdata_open)
+            t_end = -1
+            title = ""
+            if t_start != -1:
+                t_start += len(title_cdata_open)
+                t_end = block.find(title_cdata_close, t_start)
+                if t_end != -1:
+                    title = block[t_start:t_end].strip()
+            else:
+                # Fallback: plain title tag
+                t_start = block.find(title_tag)
+                if t_start != -1:
+                    t_start += len(title_tag)
+                    t_end = block.find("</title>", t_start)
+                    if t_end != -1:
+                        title = block[t_start:t_end].strip()
+
+            # Determine health from title
+            if title:
+                if ("[resolved]" in title) or ("operating normally" in title):
+                    is_good = True
+                else:
                     is_good = False
-                    break
+            else:
+                # If we can't parse the title, fall back to optimistic default
+                is_good = True
+        else:
+            # No items found; assume healthy
+            is_good = True
 
         cache.set(cache_key, "good" if is_good else "bad", ttl_seconds = 300)
         return is_good
-    
-    # Default to good if can't fetch
+
+    # If fetch fails, assume healthy to avoid noisy false alarms
     return True
 
 def check_google_status():

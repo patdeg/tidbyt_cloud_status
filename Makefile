@@ -16,6 +16,10 @@ APP := tidbyt_cloud_status
 STAR := $(APP).star
 WEBP := $(APP).webp
 
+AI_APP := tidbyt_ai_status
+AI_STAR := $(AI_APP).star
+AI_WEBP := $(AI_APP).webp
+
 .PHONY: default render serve push clean
 
 # Minimal conveniences; primary flow is ./refresh.sh
@@ -32,6 +36,20 @@ push: render
 
 clean:
 	rm -f $(WEBP)
+
+# AI app helpers
+.PHONY: render-ai serve-ai push-ai clean-ai
+render-ai:
+	pixlet render $(AI_STAR)
+
+serve-ai:
+	pixlet serve $(AI_STAR)
+
+push-ai: render-ai
+	./refresh_ai.sh
+
+clean-ai:
+	rm -f $(AI_WEBP)
 
 # Serve the Tidbyt app locally for development and preview
 serve:
