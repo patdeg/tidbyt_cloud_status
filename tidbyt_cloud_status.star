@@ -198,9 +198,9 @@ def main(config):
     azure_status = check_azure_status()
     
     # Build the display as one row with three columns (AWS, GCP, Azure)
-    def provider_column(icon, label, color, is_good):
+    def provider_column(icon_widget, is_good):
         children = [
-            render.Image(src = icon, width = 14, height = 14),
+            icon_widget,
             render.Box(width = 1, height = 2),
             create_status_indicator(is_good),
         ]
@@ -216,9 +216,25 @@ def main(config):
         main_align = "space_evenly",
         cross_align = "center",
         children = [
-            provider_column(AWS_ICON, "AWS", "#FF9900", aws_status),
-            provider_column(GCP_ICON, "GCP", "#4285F4", google_status),
-            provider_column(AZURE_ICON, "Azure", "#0078D4", azure_status),
+            # AWS: render lowercase 'aws' in white to fit within ~16px
+            provider_column(
+                render.Text(
+                    "aws",
+                    color = "#FFFFFF",
+                    font = "tom-thumb",
+                ),
+                aws_status,
+            ),
+            # GCP icon image
+            provider_column(
+                render.Image(src = GCP_ICON, width = 14, height = 14),
+                google_status,
+            ),
+            # Azure icon image
+            provider_column(
+                render.Image(src = AZURE_ICON, width = 14, height = 14),
+                azure_status,
+            ),
         ],
     )
     
