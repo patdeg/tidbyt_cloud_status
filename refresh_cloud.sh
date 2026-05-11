@@ -3,7 +3,7 @@
 # Designed for cron usage.
 
 set -euo pipefail
-export PATH=$PATH:/bin:/usr/bin
+export PATH="$HOME/.local/bin:$HOME/go/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
 # Navigate to this project directory
 cd /home/pdeglon/patdeg/tidbyt_cloud_status

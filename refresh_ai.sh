@@ -3,7 +3,7 @@
 # Mirrors refresh.sh but targets tidbyt_ai_status.star
 
 set -euo pipefail
-export PATH=$PATH:/bin:/usr/bin
+export PATH="$HOME/.local/bin:$HOME/go/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
 cd /home/pdeglon/patdeg/tidbyt_cloud_status
 

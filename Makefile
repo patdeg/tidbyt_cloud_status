@@ -20,7 +20,7 @@ AI_APP := tidbyt_ai_status
 AI_STAR := $(AI_APP).star
 AI_WEBP := $(AI_APP).webp
 
-.PHONY: default render serve push clean
+.PHONY: default render serve push clean render-ai serve-ai push-ai clean-ai showcode
 
 # Minimal conveniences; primary flow is ./refresh.sh
 default: push
@@ -29,16 +29,15 @@ render:
 	pixlet render $(STAR)
 
 serve:
-	pixlet serve $(STAR)
+	@pixlet serve $(STAR) $(ARGS)
 
 push: render
 	./refresh.sh
 
 clean:
-	rm -f $(WEBP)
+	@rm -f $(WEBP) $(AI_WEBP)
 
 # AI app helpers
-.PHONY: render-ai serve-ai push-ai clean-ai
 render-ai:
 	pixlet render $(AI_STAR)
 
@@ -50,10 +49,6 @@ push-ai: render-ai
 
 clean-ai:
 	rm -f $(AI_WEBP)
-
-# Serve the Tidbyt app locally for development and preview
-serve:
-	@pixlet serve $(STAR) $(ARGS)
 
 # Show code of all files in the project
 showcode:
@@ -67,7 +62,3 @@ showcode:
 		done; \
 	} | xclip -selection clipboard
 	@echo "All code copied to clipboard"
-
-# Clean up any generated files
-clean:
-	@rm -f $(WEBP)
