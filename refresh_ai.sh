@@ -35,10 +35,24 @@ cleanup() { rm -rf "$TMPDIR"; }
 trap cleanup EXIT
 cp "$STAR" "$TMPDIR/"
 
-if [ -n "${ARGS:-}" ]; then
-  (cd "$TMPDIR" && pixlet render "$STAR" ${ARGS})
-else
-  (cd "$TMPDIR" && pixlet render "$STAR")
+# Retry render on transient http.get timeouts inside Starlark. The provider
+# status APIs (status.openai.com, status.claude.com, groqstatus.com) regularly
+# hit "context deadline exceeded"; without retries a single timeout aborted
+# the cron cycle under `set -e` and the device kept the previous frame.
+render_ok=0
+for attempt in 1 2 3; do
+  if [ -n "${ARGS:-}" ]; then
+    (cd "$TMPDIR" && pixlet render "$STAR" ${ARGS}) && render_ok=1 && break
+  else
+    (cd "$TMPDIR" && pixlet render "$STAR") && render_ok=1 && break
+  fi
+  echo "[ai-status] render attempt $attempt failed"
+  [ "$attempt" -lt 3 ] && sleep 5
+done
+
+if [ "$render_ok" -ne 1 ]; then
+  echo "[ai-status] render failed after 3 attempts; skipping push"
+  exit 0
 fi
 
 # Move the rendered image back to project directory

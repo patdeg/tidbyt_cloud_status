@@ -39,10 +39,25 @@ cleanup() { rm -rf "$TMPDIR"; }
 trap cleanup EXIT
 cp "$STAR" "$TMPDIR/"
 
-if [ -n "${ARGS:-}" ]; then
-  (cd "$TMPDIR" && pixlet render "$STAR" ${ARGS})
-else
-  (cd "$TMPDIR" && pixlet render "$STAR")
+# Retry render on transient http.get timeouts inside Starlark. The status
+# APIs (status.aws.amazon.com, status.cloud.google.com, etc.) regularly hit
+# "context deadline exceeded"; without retries a single timeout aborted the
+# cron cycle under `set -e` and the device kept the previous frame, which
+# manifested as a "stale image" on the Tidbyt.
+render_ok=0
+for attempt in 1 2 3; do
+  if [ -n "${ARGS:-}" ]; then
+    (cd "$TMPDIR" && pixlet render "$STAR" ${ARGS}) && render_ok=1 && break
+  else
+    (cd "$TMPDIR" && pixlet render "$STAR") && render_ok=1 && break
+  fi
+  echo "[cloud-status] render attempt $attempt failed"
+  [ "$attempt" -lt 3 ] && sleep 5
+done
+
+if [ "$render_ok" -ne 1 ]; then
+  echo "[cloud-status] render failed after 3 attempts; skipping push"
+  exit 0
 fi
 
 # Move the rendered image back to project directory
