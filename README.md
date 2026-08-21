@@ -10,7 +10,9 @@ Also includes a companion AI Status app for OpenAI, Anthropic, and Groq using th
 
 ## Requirements
 
-- Pixlet installed and authenticated (`pixlet devices` works)
+- Pixlet installed. Interactive auth is **not** required: `refresh_cloud.sh` and
+  `refresh_ai.sh` authenticate per device with `--api-token` from `.env`.
+  (`pixlet devices` needs interactive auth, but nothing in the cron path uses it.)
 - Bash, curl, ImageMagick (optional; only needed if regenerating icons)
 
 ## Setup
@@ -40,11 +42,16 @@ pixlet render tidbyt_cloud_status.star
 
 ## Cron
 
-Example every 5 minutes:
+`refresh.sh` is the single entry point: it runs the AI app, sleeps 10s, then the
+cloud app. The installed crontab on alfred is:
 
 ```
-*/5 * * * * /home/pdeglon/patdeg/tidbyt_cloud_status/refresh.sh >> /home/pdeglon/patdeg/tidbyt_cloud_status/cron.log 2>&1
+*/5 * * * * /home/pdeglon/patdeg/tidbyt_cloud_status/refresh.sh >> /home/pdeglon/logs/tidbyt_cloud_status.log 2>&1
 ```
+
+The log path matters: `refresh.sh` rotates `/home/pdeglon/logs/tidbyt_cloud_status.log`
+by truncating in place at 10 MB, which only works if cron redirects to that exact
+file. Do not point the redirect elsewhere without updating `LOG` in `refresh.sh`.
 
 ## Assets
 
@@ -67,11 +74,8 @@ pixlet render tidbyt_ai_status.star
 ./refresh_ai.sh
 ```
 
-- Optional cron (every 5 minutes):
-
-```
-*/5 * * * * /home/pdeglon/patdeg/tidbyt_cloud_status/refresh_ai.sh >> /home/pdeglon/patdeg/tidbyt_cloud_status/cron.log 2>&1
-```
+- No separate cron needed: `refresh.sh` already runs this app before the cloud one.
+  Add one only if you want the two apps on different schedules.
 
 ### Icon generator updates
 
