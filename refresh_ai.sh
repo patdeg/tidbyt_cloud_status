@@ -21,7 +21,7 @@ if [ "$SANITIZED_INSTALLATION_ID" != "$INSTALLATION_ID" ]; then
   echo "[ai-status] Adjusted installation id to alphanumeric: $SANITIZED_INSTALLATION_ID (from $INSTALLATION_ID)"
 fi
 
-DESK_DEVICE_ID="${TIDBYT_DEVICE_ID_DESK:-${TIDBYT_DEVICE_ID_DECK:-}}"
+DESK_DEVICE_ID="${TIDBYT_DEVICE_ID_DESK:-}"
 DESK_API_TOKEN="${TIDBYT_API_TOKEN_DESK:-}"
 SHELF_DEVICE_ID="${TIDBYT_DEVICE_ID_SHELF:-}"
 SHELF_API_TOKEN="${TIDBYT_API_TOKEN_SHELF:-}"
@@ -68,7 +68,7 @@ if [ -n "$DESK_DEVICE_ID" ] && [ -n "$DESK_API_TOKEN" ]; then
     echo "[ai-status] WARNING: Push to DESK failed"
   fi
 else
-  echo "[ai-status] Skipping DESK: missing TIDBYT_DEVICE_ID_DESK/DECK or TIDBYT_API_TOKEN_DESK"
+  echo "[ai-status] Skipping DESK: missing TIDBYT_DEVICE_ID_DESK or TIDBYT_API_TOKEN_DESK"
 fi
 
 if [ -n "$SHELF_DEVICE_ID" ] && [ -n "$SHELF_API_TOKEN" ]; then

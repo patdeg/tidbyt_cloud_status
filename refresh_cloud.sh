@@ -24,8 +24,7 @@ if [ "$SANITIZED_INSTALLATION_ID" != "$INSTALLATION_ID" ]; then
   echo "[cloud-status] Adjusted installation id to alphanumeric: $SANITIZED_INSTALLATION_ID (from $INSTALLATION_ID)"
 fi
 
-# Determine device id var names (support DESK/DECK variants)
-DESK_DEVICE_ID="${TIDBYT_DEVICE_ID_DESK:-${TIDBYT_DEVICE_ID_DECK:-}}"
+DESK_DEVICE_ID="${TIDBYT_DEVICE_ID_DESK:-}"
 DESK_API_TOKEN="${TIDBYT_API_TOKEN_DESK:-}"
 SHELF_DEVICE_ID="${TIDBYT_DEVICE_ID_SHELF:-}"
 SHELF_API_TOKEN="${TIDBYT_API_TOKEN_SHELF:-}"
@@ -74,7 +73,7 @@ if [ -n "$DESK_DEVICE_ID" ] && [ -n "$DESK_API_TOKEN" ]; then
     echo "[cloud-status] WARNING: Push to DESK failed"
   fi
 else
-  echo "[cloud-status] Skipping DESK: missing TIDBYT_DEVICE_ID_DESK/DECK or TIDBYT_API_TOKEN_DESK"
+  echo "[cloud-status] Skipping DESK: missing TIDBYT_DEVICE_ID_DESK or TIDBYT_API_TOKEN_DESK"
 fi
 
 # Push to SHELF device
